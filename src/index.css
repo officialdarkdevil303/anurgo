@@ -32,6 +32,17 @@
   box-sizing: border-box;
 }
 
+/* Site-wide Proportional Scale (Making entire website bigger and more prominent) */
+html {
+  font-size: 18px;
+}
+
+@media (min-width: 1536px) {
+  html {
+    font-size: 19px;
+  }
+}
+
 html, body, #root {
   background-color: #0C0C0C;
   color: #D7E2EA;

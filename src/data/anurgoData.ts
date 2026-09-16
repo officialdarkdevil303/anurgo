@@ -355,7 +355,7 @@ export const SHOWCASE_CONCEPTS: ShowcaseConcept[] = [
     accentColor: '#A855F7',
     metrics: '0.49s Load • 100/100 Vitals',
     tech: ['React 19', 'Interactive Graphs', 'Waitlist Sync'],
-    demoBadge: 'DEMO CONCEPT',
+    demoBadge: 'SELF-INITIATED CONCEPT',
   },
   {
     id: 'sc-portfolio',
@@ -367,7 +367,7 @@ export const SHOWCASE_CONCEPTS: ShowcaseConcept[] = [
     accentColor: '#FF7824',
     metrics: '0.55s Load • Zero Layout Shift',
     tech: ['Grid Masonry', 'Lightbox', 'WebP Assets'],
-    demoBadge: 'DEMO CONCEPT',
+    demoBadge: 'SELF-INITIATED CONCEPT',
   },
   {
     id: 'sc-service',
@@ -379,7 +379,7 @@ export const SHOWCASE_CONCEPTS: ShowcaseConcept[] = [
     accentColor: '#F59E0B',
     metrics: '0.59s Load • 100 SEO',
     tech: ['TypeScript', 'Form Validation', 'SMS Webhooks'],
-    demoBadge: 'DEMO CONCEPT',
+    demoBadge: 'SELF-INITIATED CONCEPT',
   }
 ];
 
@@ -393,7 +393,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     tagline: 'Handmade heritage pasta, wood-fired Florentine cuts, and an interactive sommelier cellar.',
     summary: 'A warm, atmospheric dining portal engineered for a premier Italian trattoria. Features high-res macro culinary visuals, real-time table booking, seasonal antipasti menus, and curated cellar vintages.',
     isDemoConcept: true,
-    badgeText: 'DEMO CONCEPT',
+    badgeText: 'SELF-INITIATED CONCEPT',
     accentColor: '#FF5400',
     heroImage: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80',
     mockupImages: {
@@ -460,7 +460,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     tagline: 'Single-origin micro-lots, sensory flavor notes, and recurring bean drops.',
     summary: 'A minimalist, warm modern web presence built for an independent specialty café. Features origin flavor wheel notes, café location finder, weekly bean drop countdowns, and a seamless bean subscription builder.',
     isDemoConcept: true,
-    badgeText: 'DEMO CONCEPT',
+    badgeText: 'SELF-INITIATED CONCEPT',
     accentColor: '#F59E0B',
     heroImage: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1200&q=80',
     mockupImages: {
@@ -527,7 +527,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     tagline: 'Precision color transformations, Japanese scalp therapies, and couture styling.',
     summary: 'A luxurious, serene web platform designed for an upscale salon and aesthetic lounge. Includes stylist lookbook portfolios, treatment pricing tiers, and an intuitive appointment reservation flow.',
     isDemoConcept: true,
-    badgeText: 'DEMO CONCEPT',
+    badgeText: 'SELF-INITIATED CONCEPT',
     accentColor: '#F43F5E',
     heroImage: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1200&q=80',
     mockupImages: {
@@ -594,7 +594,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     tagline: 'Independent designer apparel, handcrafted leather accessories, and sustainable goods.',
     summary: 'A contemporary e-commerce and local boutique storefront showcasing seasonal lookbooks, real-time store inventory, click-and-collect pickup, and local designer spotlights.',
     isDemoConcept: true,
-    badgeText: 'DEMO CONCEPT',
+    badgeText: 'SELF-INITIATED CONCEPT',
     accentColor: '#10B981',
     heroImage: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80',
     mockupImages: {
@@ -661,7 +661,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     tagline: 'Panoramic mountain chalets, private hot spring cedar tubs, and farm-to-table dining.',
     summary: 'A breathtaking hospitality website built for a boutique mountain lodge. Features immersive suite tours, winter/summer seasonal experience guides, and a direct room booking engine.',
     isDemoConcept: true,
-    badgeText: 'DEMO CONCEPT',
+    badgeText: 'SELF-INITIATED CONCEPT',
     accentColor: '#06B6D4',
     heroImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
     mockupImages: {
@@ -728,7 +728,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
     tagline: 'Biometric conditioning, contrast hydrotherapy, and elite athlete coaching.',
     summary: 'A high-impact, dark athletic portal engineered for a private fitness and longevity club. Includes coach profiles, membership tier comparisons, and a free trial pass request system.',
     isDemoConcept: true,
-    badgeText: 'DEMO CONCEPT',
+    badgeText: 'SELF-INITIATED CONCEPT',
     accentColor: '#FF3366',
     heroImage: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80',
     mockupImages: {

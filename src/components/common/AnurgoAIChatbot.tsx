@@ -119,7 +119,7 @@ export const AnurgoAIChatbot: React.FC<AnurgoAIChatbotProps> = ({ onNavigateSect
       q.includes('savoria')
     ) {
       return {
-        text: `Here are our flagship featured projects and design concepts:
+        text: `Here are our flagship self-initiated concepts and interactive demo experiences:
 
 1. **NEXTLEVEL STUDIO** — Immersive 3D agency portfolio featuring fluid WebGL physics and kinetic typography.
 2. **AURA BRAND IDENTITY** — Modern SaaS design system with real-time performance analytics.
@@ -128,7 +128,7 @@ export const AnurgoAIChatbot: React.FC<AnurgoAIChatbotProps> = ({ onNavigateSect
 5. **AURA ROASTERS** — Single-origin coffee roastery with tasting notes & subscription builder.`,
         actionButtons: [
           {
-            label: 'Explore Selected Work',
+            label: 'Explore Selected Concepts',
             action: () => scrollToSection('work'),
           },
           {

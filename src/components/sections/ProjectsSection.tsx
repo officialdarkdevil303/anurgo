@@ -13,6 +13,8 @@ export interface ProjectCardData {
   col1Img1: string;
   col1Img2: string;
   col2Img: string;
+  projectType?: 'concept' | 'client';
+  badgeLabel?: string;
 }
 
 const PROJECTS_DATA: ProjectCardData[] = [
@@ -22,8 +24,10 @@ const PROJECTS_DATA: ProjectCardData[] = [
     category: 'Creative Portfolio • 3D Experience',
     title: 'NEXTLEVEL STUDIO',
     description:
-      'An immersive 3D agency portfolio featuring fluid WebGL physics, kinetic typography, and interactive showcase grids designed for high-end digital studios.',
+      'An immersive 3D agency portfolio concept featuring fluid WebGL physics, kinetic typography, and interactive showcase grids designed to demonstrate high-end digital craft.',
     techStack: ['React', 'Three.js', 'Framer Motion', 'Tailwind CSS'],
+    projectType: 'concept',
+    badgeLabel: 'DEMO PROJECT // CASE STUDY SPEC',
     col1Img1:
       'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85',
     col1Img2:
@@ -37,8 +41,10 @@ const PROJECTS_DATA: ProjectCardData[] = [
     category: 'SaaS / Startup Website • Design System',
     title: 'AURA BRAND IDENTITY',
     description:
-      'Modern design system and SaaS dashboard with real-time performance analytics, bespoke icon sets, and multi-platform dark mode UI kit.',
+      'Modern concept design system and SaaS dashboard demo featuring real-time analytics visualization, bespoke icon sets, and multi-platform dark mode UI kit.',
     techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'WebGL'],
+    projectType: 'concept',
+    badgeLabel: 'DEMO PROJECT // CASE STUDY SPEC',
     col1Img1:
       'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055654_911201c5-36d9-4bc6-bac7-331adfce159f.png&w=1280&q=85',
     col1Img2:
@@ -52,8 +58,10 @@ const PROJECTS_DATA: ProjectCardData[] = [
     category: 'E-commerce Website • 3D Visualizer',
     title: 'SOLARIS DIGITAL',
     description:
-      'Luxury direct-to-consumer digital flagship featuring interactive 3D product configurations, instant cart physics, and sub-second edge CDN hosting.',
+      'Direct-to-consumer digital concept store featuring interactive 3D product configurations, instant cart physics, and sub-second edge CDN hosting architecture.',
     techStack: ['React', '3D Canvas', 'Tailwind CSS', 'Edge CDN'],
+    projectType: 'concept',
+    badgeLabel: 'DEMO PROJECT // CASE STUDY SPEC',
     col1Img1:
       'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055759_963cfb0b-4bd1-4b0f-9d0a-09bd6cf95b2f.png&w=1280&q=85',
     col1Img2:
@@ -152,10 +160,31 @@ const StickyProjectCard: React.FC<ProjectCardProps> = ({
               {project.number}
             </span>
 
-            <div className="space-y-1">
-              <span className="text-[10px] sm:text-xs font-mono font-bold tracking-widest text-orange-400 uppercase block">
-                {project.category}
-              </span>
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider ${
+                    project.projectType === 'client'
+                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                      : 'bg-amber-500/10 text-amber-300 border border-amber-500/30'
+                  }`}
+                >
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      project.projectType === 'client' ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'
+                    }`}
+                  />
+                  {project.badgeLabel ||
+                    (project.projectType === 'client'
+                      ? 'CLIENT PROJECT • DELIVERED'
+                      : 'SELF-INITIATED CONCEPT')}
+                </span>
+
+                <span className="text-[10px] sm:text-xs font-mono font-bold tracking-widest text-orange-400 uppercase">
+                  {project.category}
+                </span>
+              </div>
+
               <h3
                 className="font-black uppercase tracking-tight text-white leading-none group-hover:text-white transition-colors"
                 style={{ fontSize: 'clamp(1.1rem, 2.8vw, 2.5rem)' }}
@@ -165,12 +194,12 @@ const StickyProjectCard: React.FC<ProjectCardProps> = ({
             </div>
           </div>
 
-          {/* VIEW PROJECT CTA Button */}
+          {/* VIEW CONCEPT / VIEW PROJECT CTA Button */}
           <button
             onClick={onLiveProjectClick}
             className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#181818] hover:bg-orange-500 text-white hover:text-black border border-[#D7E2EA]/30 hover:border-orange-400 font-mono font-black text-xs uppercase tracking-widest transition-all duration-300 flex items-center gap-2 cursor-pointer shadow-md group-hover:scale-105"
           >
-            <span>VIEW PROJECT</span>
+            <span>{project.projectType === 'client' ? 'VIEW PROJECT' : 'VIEW CONCEPT'}</span>
             <ArrowUpRight className="w-4 h-4" />
           </button>
         </div>
@@ -218,7 +247,7 @@ const StickyProjectCard: React.FC<ProjectCardProps> = ({
             </div>
           </div>
 
-          {/* Right Column (60% width on md+): 1 tall flagship interface */}
+          {/* Right Column (60% width on md+): 1 tall flagship interface with Evidence/Case-File DEMO PROJECT Watermark */}
           <div className="md:col-span-7 rounded-[24px] sm:rounded-[40px] md:rounded-[50px] overflow-hidden bg-[#161616] min-h-[320px] md:min-h-[614px] relative group/img cursor-pointer" onClick={onLiveProjectClick}>
             <img
               src={project.col2Img}
@@ -227,6 +256,35 @@ const StickyProjectCard: React.FC<ProjectCardProps> = ({
               className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity" />
+
+            {/* Editorial Evidence / Case-File Style "DEMO PROJECT" Stamped Watermark */}
+            <div className="absolute top-4 sm:top-6 right-4 sm:right-6 z-20 pointer-events-none select-none">
+              <div className="rotate-[-6deg] sm:rotate-[-7deg] border-2 border-dashed border-orange-500/80 bg-[#0C0C0C]/90 backdrop-blur-md px-3.5 sm:px-4 py-2 sm:py-2.5 rounded shadow-[0_12px_35px_rgba(0,0,0,0.95)] flex flex-col items-start font-mono">
+                <div className="flex items-center gap-1.5 text-[8px] sm:text-[9px] uppercase tracking-[0.24em] text-orange-400 font-bold border-b border-orange-500/30 pb-1 w-full justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                    <span>EVIDENCE FILE // ARCHIVE</span>
+                  </span>
+                  <span className="text-[#D7E2EA]/50 text-[7px] sm:text-[8px]">REF: DEMO-{project.number}</span>
+                </div>
+                <div className="flex items-center gap-2 pt-1.5 pb-0.5">
+                  <span className="text-xs sm:text-sm font-black tracking-[0.28em] text-white uppercase drop-shadow">
+                    DEMO PROJECT
+                  </span>
+                </div>
+                <span className="text-[7.5px] sm:text-[8.5px] tracking-[0.18em] text-[#D7E2EA]/70 uppercase">
+                  CONCEPT DEMONSTRATION · NOT CLIENT WORK
+                </span>
+              </div>
+            </div>
+
+            {/* Subtle Stamped Case Verification Stamp at bottom */}
+            <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 z-20 pointer-events-none select-none">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0C0C0C]/85 backdrop-blur-sm border border-[#D7E2EA]/20 rounded-sm font-mono text-[8.5px] sm:text-[9.5px] tracking-[0.2em] text-[#D7E2EA]/75 uppercase -rotate-1">
+                <span className="text-orange-400 font-bold">[DEMO SPECIFICATION]</span>
+                <span>INTERNAL PORTFOLIO EXHIBIT</span>
+              </div>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -245,18 +303,25 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onProjectSelec
       className="w-full bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 relative z-10 px-4 sm:px-6 md:px-10 pt-24 sm:pt-32 pb-36 select-none"
     >
       {/* Section Heading */}
-      <FadeIn delay={0} y={40} className="w-full text-center mb-16 sm:mb-20 md:mb-28">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#161616] border border-[#D7E2EA]/20 text-[10px] sm:text-xs font-mono text-orange-400 uppercase tracking-widest font-bold mb-4">
+      <FadeIn delay={0} y={40} className="w-full text-center mb-16 sm:mb-20 md:mb-24">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#161616] border border-orange-500/30 text-[10px] sm:text-xs font-mono text-orange-400 uppercase tracking-widest font-bold mb-4">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Selected Commercial & Studio Work</span>
+          <span>Self-Initiated Concept Showcase • Demo Projects</span>
         </div>
 
         <h2
           className="hero-heading font-black uppercase leading-none tracking-tight text-center"
           style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
         >
-          Selected Work
+          Selected Concepts
         </h2>
+
+        {/* Transparent Honest Disclaimer */}
+        <div className="mt-5 sm:mt-6 max-w-2xl mx-auto px-5 py-3.5 rounded-2xl bg-[#141414]/80 border border-[#D7E2EA]/10 backdrop-blur-sm">
+          <p className="text-xs sm:text-sm text-[#D7E2EA]/85 font-sans leading-relaxed text-center">
+            Self-initiated concepts created to demonstrate the kind of digital experiences ANURGO can build for real businesses. These are demo projects, not client work.
+          </p>
+        </div>
       </FadeIn>
 
       {/* 3 Stacking Real Digital Project Cards */}

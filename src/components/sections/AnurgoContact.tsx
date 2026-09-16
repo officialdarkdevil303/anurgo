@@ -28,12 +28,13 @@ export const AnurgoContact: React.FC<AnurgoContactProps> = ({ initialServiceOrPr
     email: '',
     businessName: '',
     phone: '',
-    projectType: '3D Website',
-    budget: 'Not decided yet',
-    timeline: '2–4 Weeks',
+    projectType: 'Landing Page / Single Page',
+    budget: "Flexible / Let's Discuss",
+    timeline: '1–2 Weeks',
     details: initialServiceOrProject ? `Interested in discussing: ${initialServiceOrProject}` : '',
   });
 
+  const [customBudget, setCustomBudget] = useState('');
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedBrief, setCopiedBrief] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,6 +47,17 @@ export const AnurgoContact: React.FC<AnurgoContactProps> = ({ initialServiceOrPr
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  React.useEffect(() => {
+    if (initialServiceOrProject) {
+      setFormData((prev) => ({
+        ...prev,
+        details: prev.details
+          ? prev.details
+          : `Interested in discussing: ${initialServiceOrProject}`,
+      }));
+    }
+  }, [initialServiceOrProject]);
+
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!formData.fullName.trim()) errs.fullName = 'Please enter your name';
@@ -56,7 +68,15 @@ export const AnurgoContact: React.FC<AnurgoContactProps> = ({ initialServiceOrPr
     return Object.keys(errs).length === 0;
   };
 
+  const getEffectiveBudget = () => {
+    if (formData.budget === 'Custom Budget') {
+      return customBudget.trim() ? `Custom: ${customBudget.trim()}` : 'Custom / To be discussed';
+    }
+    return formData.budget;
+  };
+
   const generateBriefMessage = () => {
+    const effectiveBudget = getEffectiveBudget();
     return `*ANURGO STUDIO — NEW PROJECT BRIEF*
 ----------------------------------------
 👤 *Name:* ${formData.fullName.trim()}
@@ -64,7 +84,7 @@ export const AnurgoContact: React.FC<AnurgoContactProps> = ({ initialServiceOrPr
 🏢 *Business / Brand:* ${formData.businessName.trim()}
 📱 *Phone / WhatsApp:* ${formData.phone.trim() || 'Not specified'}
 🎯 *Project Type:* ${formData.projectType}
-💰 *Budget Range:* ${formData.budget}
+💰 *Budget Range:* ${effectiveBudget}
 ⏱️ *Preferred Timeline:* ${formData.timeline}
 
 📝 *Project Details & Goals:*
@@ -80,6 +100,7 @@ Sent via ANURGO Portfolio Website`;
     setIsSubmitting(true);
     setApiError(null);
 
+    const effectiveBudget = getEffectiveBudget();
     const briefText = generateBriefMessage();
     const whatsappUrl = `https://wa.me/917991192205?text=${encodeURIComponent(briefText)}`;
     
@@ -93,7 +114,7 @@ Email: ${formData.email.trim()}
 Business/Brand: ${formData.businessName.trim()}
 Phone/WhatsApp: ${formData.phone.trim() || 'Not specified'}
 Project Type: ${formData.projectType}
-Budget Range: ${formData.budget}
+Budget Range: ${effectiveBudget}
 Preferred Timeline: ${formData.timeline}
 
 Project Details:
@@ -116,7 +137,10 @@ Looking forward to hearing from you!`;
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          budget: effectiveBudget,
+        }),
       });
 
       const data = await response.json().catch(() => ({}));
@@ -163,14 +187,15 @@ Looking forward to hearing from you!`;
   const resetForm = () => {
     setSubmitted(false);
     setApiError(null);
+    setCustomBudget('');
     setFormData({
       fullName: '',
       email: '',
       businessName: '',
       phone: '',
-      projectType: '3D Website',
-      budget: 'Not decided yet',
-      timeline: '2–4 Weeks',
+      projectType: 'Landing Page / Single Page',
+      budget: "Flexible / Let's Discuss",
+      timeline: '1–2 Weeks',
       details: '',
     });
   };
@@ -494,32 +519,62 @@ Looking forward to hearing from you!`;
                         disabled={isSubmitting}
                         className="w-full px-4 py-3 rounded-2xl bg-[#1A1A1A] border border-[#D7E2EA]/20 text-sm text-[#D7E2EA] focus:outline-none focus:border-orange-500 transition-colors cursor-pointer font-sans disabled:opacity-50"
                       >
-                        <option value="Web Design">Web Design</option>
-                        <option value="3D Website">3D Website</option>
-                        <option value="Creative Development">Creative Development</option>
-                        <option value="UI/UX Design">UI/UX Design</option>
-                        <option value="Branding">Branding</option>
-                        <option value="Motion Design">Motion Design</option>
-                        <option value="Other">Other</option>
+                        <option value="Landing Page / Single Page">Landing Page / Single Page</option>
+                        <option value="Business Website">Business Website (Multi-Page)</option>
+                        <option value="Restaurant & Café Website">Restaurant &amp; Café Website</option>
+                        <option value="Local Shop / Boutique Website">Local Shop / Storefront</option>
+                        <option value="Portfolio Website">Portfolio / Personal Website</option>
+                        <option value="Website Redesign / Fixes">Website Redesign / Bug Fixes</option>
+                        <option value="3D & Interactive Web Experience">3D &amp; Interactive Web Experience</option>
+                        <option value="UI/UX Design">UI/UX Design &amp; Prototyping</option>
+                        <option value="Other">Other / Let&apos;s Discuss</option>
                       </select>
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-mono text-[#D7E2EA] uppercase tracking-wider">
-                        Budget Range
-                      </label>
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-mono text-[#D7E2EA] uppercase tracking-wider">
+                          Budget Range
+                        </label>
+                        <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                          Open to All Budgets
+                        </span>
+                      </div>
                       <select
                         value={formData.budget}
                         onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                         disabled={isSubmitting}
                         className="w-full px-4 py-3 rounded-2xl bg-[#1A1A1A] border border-[#D7E2EA]/20 text-sm text-[#D7E2EA] focus:outline-none focus:border-orange-500 transition-colors cursor-pointer font-sans disabled:opacity-50"
                       >
+                        <option value="Flexible / Let's Discuss">Flexible / Let&apos;s Discuss (Recommended)</option>
+                        <option value="Under ₹3,000">Under ₹3,000 (Quick Page / Edits / Fixes)</option>
+                        <option value="₹3,000 – ₹7,000">₹3,000 – ₹7,000 (Starter / Single-Page Website)</option>
+                        <option value="₹7,000 – ₹15,000">₹7,000 – ₹15,000 (Small Business / Multi-Page)</option>
+                        <option value="₹15,000 – ₹25,000">₹15,000 – ₹25,000 (Advanced / Custom UI)</option>
+                        <option value="₹25,000+">₹25,000+ (Comprehensive Project)</option>
+                        <option value="Custom Budget">Custom Budget (Enter your own amount)</option>
                         <option value="Not decided yet">Not decided yet</option>
-                        <option value="₹10K – ₹25K">₹10K – ₹25K</option>
-                        <option value="₹25K – ₹50K">₹25K – ₹50K</option>
-                        <option value="₹50K – ₹1L">₹50K – ₹1L</option>
-                        <option value="₹1L+">₹1L+</option>
                       </select>
+
+                      {/* Custom Budget Input if "Custom Budget" is chosen */}
+                      {formData.budget === 'Custom Budget' && (
+                        <div className="pt-1.5 animate-fadeIn">
+                          <input
+                            type="text"
+                            value={customBudget}
+                            onChange={(e) => setCustomBudget(e.target.value)}
+                            placeholder="Enter your budget (e.g. ₹1,500, ₹4,000, $50)"
+                            disabled={isSubmitting}
+                            className="w-full px-4 py-2.5 rounded-xl bg-[#141414] border border-orange-500/50 text-xs text-[#D7E2EA] placeholder:text-[#D7E2EA]/30 focus:outline-none focus:border-orange-500 transition-colors font-mono"
+                            autoFocus
+                          />
+                        </div>
+                      )}
+
+                      <p className="text-[11px] text-[#D7E2EA]/60 font-sans flex items-center gap-1.5 pt-0.5">
+                        <span className="text-orange-400 font-bold">💡 Friendly note:</span>
+                        <span>As an early-stage creator, no project is too small. We will tailor the scope to match your budget!</span>
+                      </p>
                     </div>
                   </div>
 
@@ -534,9 +589,10 @@ Looking forward to hearing from you!`;
                       disabled={isSubmitting}
                       className="w-full px-4 py-3 rounded-2xl bg-[#1A1A1A] border border-[#D7E2EA]/20 text-sm text-[#D7E2EA] focus:outline-none focus:border-orange-500 transition-colors cursor-pointer font-sans disabled:opacity-50"
                     >
-                      <option value="1–2 Weeks">1–2 Weeks (Fast-track)</option>
-                      <option value="2–4 Weeks">2–4 Weeks (Standard)</option>
-                      <option value="1–2 Months">1–2 Months (Complex)</option>
+                      <option value="2–4 Days">2–4 Days (Quick Turnaround / Fixes)</option>
+                      <option value="1–2 Weeks">1–2 Weeks (Fast-track Website)</option>
+                      <option value="2–4 Weeks">2–4 Weeks (Standard Project)</option>
+                      <option value="1–2 Months">1–2 Months (Complex Platform)</option>
                       <option value="Flexible">Flexible Timeline</option>
                     </select>
                   </div>
@@ -550,7 +606,7 @@ Looking forward to hearing from you!`;
                       rows={4}
                       value={formData.details}
                       onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-                      placeholder="Tell me about what you want to build, target audience, reference sites, or specific features..."
+                      placeholder="Tell me about what you want to build, target audience, reference sites, or any specific budget expectations..."
                       disabled={isSubmitting}
                       className={`w-full px-4 py-3 rounded-2xl bg-[#1A1A1A] border ${
                         errors.details ? 'border-rose-500' : 'border-[#D7E2EA]/20'

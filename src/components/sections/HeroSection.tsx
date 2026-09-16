@@ -10,8 +10,8 @@ interface HeroSectionProps {
 }
 
 const PRIMARY_AVATAR = {
-  src: '/anurgo_3d_creator.jpg',
-  alt: 'Anurag — Founder & Creative Developer at ANURGO',
+  src: '/anurgo_3d_creator.png',
+  alt: 'Anurag – Founder & Creative Developer at ANURGO',
 };
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -20,57 +20,69 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const heroRef = useRef<HTMLElement | null>(null);
 
-  // Motion values for lively, fluid cursor tracking with physics spring
+  // Motion values for subtle, smooth cursor tracking with cinematic easing
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Responsive, lively spring physics matching original magnetic feel
-  const springConfig = { damping: 18, stiffness: 140, mass: 0.5 };
+  // Highly refined, damped spring physics for silky, cinematic horizontal parallax (no sudden jump, no shaking, no lag)
+  const springConfig = { damping: 42, stiffness: 65, mass: 1.0 };
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
 
-  // 3D perspective orientation / tilt responding dynamically to cursor position
-  const rotateX = useTransform(smoothY, [-45, 8], [8, -4]);
-  const rotateY = useTransform(smoothX, [-60, 60], [-10, 10]);
+  // Subtle 3D perspective orientation / gentle cinematic tilt (max ~1.5 deg, completely natural, no distortion)
+  // smoothY is strictly clamped to [-5, 0] so downward motion is strictly zero
+  const rotateX = useTransform(smoothY, [-5, 0], [1.0, 0]);
+  const rotateY = useTransform(smoothX, [-10, 10], [-1.5, 1.5]);
 
   useEffect(() => {
+    // Respect prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Disable cursor following on touch / mobile devices to keep character completely stable
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || ('ontouchstart' in window);
+
+    if (prefersReducedMotion || isTouchDevice) {
+      mouseX.set(0);
+      mouseY.set(0);
+      return;
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!heroRef.current) return;
       const rect = heroRef.current.getBoundingClientRect();
 
-      // Track mouse within the viewport / hero area
+      // Center calculation based on hero section bounds
       const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height * 0.4;
+      const centerY = rect.top + rect.height * 0.42;
 
       const distX = e.clientX - centerX;
       const distY = e.clientY - centerY;
 
-      // Dynamic lively magnetic calculation (like original strength = 2.8)
-      const targetX = distX / 2.8;
-      const targetY = distY / 2.8;
+      // Subtle horizontal parallax drift (gentle, cinematic, responsive)
+      const targetX = (distX / (rect.width / 2)) * 10;
+      const targetY = (distY / (rect.height / 2)) * 5;
 
-      // Clamping limits:
-      // X allows wide, lively magnetic following (-60px to +60px)
-      // Y allows full upward movement (-45px), but strictly clamps downward to +8px
-      // so the avatar NEVER crosses the hero bottom boundary
-      const clampedX = Math.max(-60, Math.min(60, targetX));
-      const clampedY = Math.max(-45, Math.min(8, targetY));
+      // Strict boundaries:
+      // X: small lateral parallax range [-10px, +10px]
+      // Y: strictly clamped upward only [-5px, 0px] so the character NEVER moves downward past the divider line
+      const clampedX = Math.max(-10, Math.min(10, targetX));
+      const clampedY = Math.max(-5, Math.min(0, targetY));
 
       mouseX.set(clampedX);
       mouseY.set(clampedY);
     };
 
     const handleMouseLeave = () => {
+      // Smoothly return to center when cursor leaves the hero area
       mouseX.set(0);
       mouseY.set(0);
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('mouseleave', handleMouseLeave);
+    heroRef.current?.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseleave', handleMouseLeave);
+      heroRef.current?.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, [mouseX, mouseY]);
 
@@ -90,62 +102,63 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       {/* Subtle Background Glow behind the Character */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[500px] md:w-[650px] h-[350px] sm:h-[500px] md:h-[650px] bg-orange-500/10 rounded-full blur-[120px] pointer-events-none z-0" />
 
-      {/* 1. Background Typography: "HI, I'M ANURGO" */}
-      <div className="w-full flex items-center justify-center z-0 overflow-hidden mt-2 sm:mt-4 md:mt-6 px-2 pointer-events-none">
+      {/* 1. Background Typography: "HI, I'M ANURGO" framing character perfectly */}
+      <div className="w-full flex items-center justify-center z-0 overflow-hidden mt-2 sm:mt-4 md:mt-6 px-4 sm:px-6 md:px-8 pointer-events-none">
         <FadeIn delay={0.1} y={30} className="w-full flex justify-center">
-          <h2
-            className="font-black uppercase tracking-tight leading-none whitespace-nowrap text-center w-full select-none"
+          <div
+            className="w-full max-w-[1500px] flex items-center justify-between font-black uppercase leading-none select-none tracking-tight"
             style={{
-              fontSize: 'clamp(3.5rem, 13.5vw, 210px)',
-              background: 'linear-gradient(180deg, #2D3748 0%, #151B26 100%)',
+              fontSize: 'clamp(2.75rem, 8.4vw, 130px)',
+              background: 'linear-gradient(180deg, #4A5568 0%, #1A202C 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              opacity: 0.55,
+              opacity: 0.65,
             }}
           >
-            Hi, i&apos;m anurgo
-          </h2>
+            {/* Left Wing: HI, I'M — positioned close to the character's hair */}
+            <div className="flex-1 flex items-center justify-end gap-x-4 sm:gap-x-6 md:gap-x-8 pr-1 sm:pr-2">
+              <span className="whitespace-nowrap tracking-wide">HI,</span>
+              <span className="whitespace-nowrap tracking-tight">I&apos;M</span>
+            </div>
+
+            {/* Central Clearance around character head & hair */}
+            <div className="w-[190px] sm:w-[240px] md:w-[300px] lg:w-[360px] shrink-0" />
+
+            {/* Right Wing: ANURGO — starting cleanly beside character */}
+            <div className="flex-1 flex items-center justify-start pl-1 sm:pl-2">
+              <span className="whitespace-nowrap tracking-tight">ANURGO</span>
+            </div>
+          </div>
         </FadeIn>
       </div>
 
-      {/* 2. Center 3D Character with Lively Magnetic Cursor Following & Bottom Clamping */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-10 w-[290px] sm:w-[380px] md:w-[460px] lg:w-[520px] top-[37%] sm:top-[40%] md:top-[42%] -translate-y-1/2 pointer-events-auto">
-        <FadeIn delay={0.3} y={20}>
-          <motion.div
-            style={{
-              x: smoothX,
-              y: smoothY,
-              rotateX,
-              rotateY,
-              transformPerspective: 1000,
-            }}
-            className="flex flex-col items-center justify-center cursor-default group"
-          >
-            {/* Smooth Floating Y Bobbing Animation */}
+      {/* 2. Hero Bottom Content: Horizontal Divider line with Character anchored to it */}
+      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-end relative z-20 mt-28 sm:mt-36 md:mt-44 pt-6 border-t border-[#D7E2EA]/10">
+        {/* Center Character strictly anchored to the divider line: bottom touches the line, NEVER below */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-full z-10 w-[270px] sm:w-[330px] md:w-[390px] lg:w-[440px] pointer-events-auto select-none">
+          <FadeIn delay={0.3} y={0}>
             <motion.div
-              animate={{
-                y: [-6, 6, -6],
+              style={{
+                x: smoothX,
+                y: smoothY,
+                rotateX,
+                rotateY,
+                transformPerspective: 1000,
               }}
-              transition={{
-                duration: 4.5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="w-full flex items-center justify-center"
+              className="flex flex-col items-center justify-end cursor-default group"
             >
-              <Transparent3DFace
-                src={PRIMARY_AVATAR.src}
-                alt={PRIMARY_AVATAR.alt}
-                isCutout={false}
-                className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)] drop-shadow-[0_0_40px_rgba(255,84,0,0.18)]"
-              />
+              <div className="w-full flex items-end justify-center">
+                <Transparent3DFace
+                  src={PRIMARY_AVATAR.src}
+                  alt={PRIMARY_AVATAR.alt}
+                  isCutout={true}
+                  className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.95)] drop-shadow-[0_0_40px_rgba(255,84,0,0.18)] block align-bottom"
+                />
+              </div>
             </motion.div>
-          </motion.div>
-        </FadeIn>
-      </div>
+          </FadeIn>
+        </div>
 
-      {/* 3. Hero Bottom Content: Headline, Supporting Text & Dual CTAs */}
-      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-end relative z-20 mt-36 sm:mt-48 md:mt-56 pt-6 border-t border-[#D7E2EA]/10">
         {/* Left Column: Big Headline */}
         <div className="lg:col-span-6 space-y-2">
           <FadeIn delay={0.35} y={20}>

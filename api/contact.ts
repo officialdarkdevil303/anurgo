@@ -113,9 +113,9 @@ export async function processProjectBrief(data: ProjectBriefPayload): Promise<No
   const email = (data.email || '').trim();
   const businessName = (data.businessName || '').trim();
   const phone = (data.phone || '').trim();
-  const projectType = data.projectType || '3D Website';
-  const budget = data.budget || 'Not decided yet';
-  const timeline = data.timeline || '2–4 Weeks';
+  const projectType = data.projectType || 'Landing Page / Single Page';
+  const budget = data.budget || "Flexible / Let's Discuss";
+  const timeline = data.timeline || '1–2 Weeks';
   const details = (data.details || '').trim();
 
   if (!fullName) errors.push('Full name is required.');

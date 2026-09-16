@@ -109,7 +109,11 @@ export const ProjectTermsSection: React.FC = () => {
                 </div>
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
-                  <span>Transparent fixed-price proposals provided after initial discovery.</span>
+                  <span>Early-client &amp; student friendly: open to all budget tiers, starting from small gigs &amp; local businesses.</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
+                  <span>Transparent fixed-price proposals provided upfront with zero hidden charges.</span>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
