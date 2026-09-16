@@ -1,7 +1,9 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { FadeIn } from '../common/FadeIn';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Lock } from 'lucide-react';
+import { DemoCautionBarrier } from '../common/DemoCautionBarrier';
+import { DemoLockedModal } from '../common/DemoLockedModal';
 
 export interface ProjectCardData {
   id: string;
@@ -197,10 +199,11 @@ const StickyProjectCard: React.FC<ProjectCardProps> = ({
           {/* VIEW CONCEPT / VIEW PROJECT CTA Button */}
           <button
             onClick={onLiveProjectClick}
-            className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#181818] hover:bg-orange-500 text-white hover:text-black border border-[#D7E2EA]/30 hover:border-orange-400 font-mono font-black text-xs uppercase tracking-widest transition-all duration-300 flex items-center gap-2 cursor-pointer shadow-md group-hover:scale-105"
+            className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#181510] hover:bg-amber-500 text-amber-300 hover:text-black border border-amber-500/50 hover:border-amber-400 font-mono font-black text-xs uppercase tracking-widest transition-all duration-300 flex items-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(245,158,11,0.2)] group-hover:scale-105"
+            title="Click to view locked demo project specification"
           >
-            <span>{project.projectType === 'client' ? 'VIEW PROJECT' : 'VIEW CONCEPT'}</span>
-            <ArrowUpRight className="w-4 h-4" />
+            <Lock className="w-3.5 h-3.5 text-amber-400 group-hover:text-black transition-colors" />
+            <span>LOCKED • DEMO ONLY</span>
           </button>
         </div>
 
@@ -224,6 +227,12 @@ const StickyProjectCard: React.FC<ProjectCardProps> = ({
 
         {/* Bottom Row: 2-Column Responsive High-Res Image Showcase Grid */}
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 md:gap-6 pt-2">
+          {/* Yellow Crime Scene / Caution Barrier Tape Crossed Over Demo Projects */}
+          <DemoCautionBarrier
+            projectTitle={project.title}
+            projectNumber={project.number}
+            onClick={onLiveProjectClick}
+          />
           {/* Left Column (40% width on md+): 2 stacked images */}
           <div className="md:col-span-5 flex flex-col gap-3 sm:gap-4 md:gap-6">
             <div className="w-full rounded-[24px] sm:rounded-[40px] md:rounded-[50px] overflow-hidden bg-[#161616] h-[170px] sm:h-[210px] md:h-[240px] relative group/img cursor-pointer" onClick={onLiveProjectClick}>
@@ -297,6 +306,8 @@ interface ProjectsSectionProps {
 }
 
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onProjectSelect }) => {
+  const [lockedProject, setLockedProject] = useState<ProjectCardData | null>(null);
+
   return (
     <section
       id="work"
@@ -332,14 +343,21 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onProjectSelec
             project={project}
             index={index}
             totalCards={PROJECTS_DATA.length}
-            onLiveProjectClick={() => {
-              if (onProjectSelect) {
-                onProjectSelect(project.id);
-              }
-            }}
+            onLiveProjectClick={() => setLockedProject(project)}
           />
         ))}
       </div>
+
+      {/* Interactive Locked Demo Modal */}
+      <DemoLockedModal
+        isOpen={!!lockedProject}
+        project={lockedProject}
+        onClose={() => setLockedProject(null)}
+        onInspectPreview={(projectId) => {
+          setLockedProject(null);
+          onProjectSelect?.(projectId);
+        }}
+      />
     </section>
   );
 };

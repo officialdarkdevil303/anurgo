@@ -12,7 +12,8 @@ import {
   Layers, 
   Palette, 
   ArrowRight,
-  ShieldCheck
+  ShieldCheck,
+  Lock
 } from 'lucide-react';
 import { PortfolioProject } from '../../data/anurgoData';
 
@@ -68,8 +69,9 @@ export const ProjectPreviewModal: React.FC<ProjectPreviewModalProps> = ({
                 <h3 className="text-sm sm:text-base font-bold text-white tracking-wide">
                   {project.title}
                 </h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 font-semibold">
-                  {project.badgeText}
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-bold inline-flex items-center gap-1">
+                  <Lock className="w-2.5 h-2.5 text-amber-400" />
+                  <span>LOCKED CONCEPT • DEMO SPEC</span>
                 </span>
               </div>
               <p className="text-xs text-slate-400 font-mono hidden sm:block">
