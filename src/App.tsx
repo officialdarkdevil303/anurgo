@@ -16,9 +16,13 @@ import { IdentityTerminalModal } from './components/common/IdentityTerminalModal
 import { ProjectPreviewModal } from './components/common/ProjectPreviewModal';
 import { FeedbackModal } from './components/common/FeedbackModal';
 import { FloatingFeedbackButton } from './components/common/FloatingFeedbackButton';
+import { AuthProvider } from './context/AuthContext';
+import { AuthModal } from './components/auth/AuthModal';
+import { ClientDashboardModal } from './components/client/ClientDashboardModal';
+import { AdminDashboardModal } from './components/admin/AdminDashboardModal';
 import { PORTFOLIO_PROJECTS, PortfolioProject } from './data/anurgoData';
 
-export const App: React.FC = () => {
+export const AppContent: React.FC = () => {
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [previewProject, setPreviewProject] = useState<PortfolioProject | null>(null);
@@ -144,7 +148,24 @@ export const App: React.FC = () => {
         onClose={() => setPreviewProject(null)}
         onSelectBookProject={handleSelectBookProject}
       />
+
+      {/* Client Authentication Modal */}
+      <AuthModal />
+
+      {/* Client Dashboard Modal */}
+      <ClientDashboardModal />
+
+      {/* Admin Analytics & Lead Pipeline Modal */}
+      <AdminDashboardModal />
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 };
 

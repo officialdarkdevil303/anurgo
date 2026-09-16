@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { Menu, X, Terminal, ArrowRight, MessageSquarePlus } from 'lucide-react';
+import { Menu, X, Terminal, ArrowRight, MessageSquarePlus, User, ShieldCheck } from 'lucide-react';
 import { AnurgoLogo } from '../common/AnurgoLogo';
+import { useAuth } from '../../context/AuthContext';
 
 interface AnurgoNavbarProps {
   onOpenTerminal: () => void;
@@ -9,6 +10,7 @@ interface AnurgoNavbarProps {
 }
 
 export const AnurgoNavbar: React.FC<AnurgoNavbarProps> = ({ onOpenTerminal, onOpenFeedback }) => {
+  const { user, isAuthenticated, isAdmin, openAuthModal, openDashboard, openAdminDashboard } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
@@ -155,7 +157,40 @@ export const AnurgoNavbar: React.FC<AnurgoNavbarProps> = ({ onOpenTerminal, onOp
           </nav>
 
           {/* Right Action: START A PROJECT CTA, Feedback & Terminal Trigger */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
+          {/* Right Action: START A PROJECT CTA, Feedback, Client Portal & Terminal */}
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Client Portal / Admin Console / Sign In Button */}
+            {isAdmin ? (
+              <button
+                onClick={openAdminDashboard}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-orange-500/25 to-amber-500/20 border border-amber-500/50 hover:border-amber-400 hover:bg-amber-500/30 text-[11px] font-mono font-bold text-amber-300 hover:text-white transition-all cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.25)] animate-pulse"
+                title="Open Admin Analytics Dashboard"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                <span className="font-black">ADMIN CONSOLE</span>
+              </button>
+            ) : isAuthenticated && user ? (
+              <button
+                onClick={openDashboard}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#181818] border border-orange-500/40 hover:border-orange-400 hover:bg-[#202020] text-[11px] font-mono font-bold text-orange-400 hover:text-orange-300 transition-all cursor-pointer shadow-sm"
+                title="Open Client Portal Dashboard"
+              >
+                <div className="w-4 h-4 rounded-full bg-orange-500 text-black font-black text-[9px] flex items-center justify-center">
+                  {user.fullName.slice(0, 1).toUpperCase()}
+                </div>
+                <span className="hidden lg:inline">PORTAL</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => openAuthModal('login')}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#181818] border border-[#D7E2EA]/20 hover:border-orange-500/50 hover:bg-[#202020] text-[11px] font-mono font-bold text-[#D7E2EA]/80 hover:text-white transition-all cursor-pointer shadow-sm"
+                title="Client Sign In / Portal"
+              >
+                <User className="w-3.5 h-3.5 text-orange-400" />
+                <span className="hidden lg:inline">CLIENT LOGIN</span>
+              </button>
+            )}
+
             {onOpenFeedback && (
               <button
                 onClick={onOpenFeedback}
@@ -226,6 +261,42 @@ export const AnurgoNavbar: React.FC<AnurgoNavbarProps> = ({ onOpenTerminal, onOp
             </div>
 
             <div className="pt-2 border-t border-[#D7E2EA]/15 space-y-2">
+              {/* Client Portal / Admin Console in Mobile */}
+              {isAdmin ? (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openAdminDashboard();
+                  }}
+                  className="w-full py-2.5 px-4 rounded-2xl bg-amber-500/20 border border-amber-500/50 text-xs font-mono font-bold text-amber-300 hover:text-white flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-[0_0_15px_rgba(245,158,11,0.2)]"
+                >
+                  <ShieldCheck className="w-4 h-4 text-amber-400" />
+                  <span>Admin Console (Master Access)</span>
+                </button>
+              ) : isAuthenticated && user ? (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openDashboard();
+                  }}
+                  className="w-full py-2.5 px-4 rounded-2xl bg-[#1A1E24] border border-orange-500/30 text-xs font-mono text-orange-400 hover:text-orange-300 flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                >
+                  <User className="w-4 h-4 text-orange-400" />
+                  <span>Client Portal ({user.fullName.split(' ')[0]})</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openAuthModal('login');
+                  }}
+                  className="w-full py-2.5 px-4 rounded-2xl bg-[#1A1E24] border border-[#D7E2EA]/15 text-xs font-mono text-[#D7E2EA] hover:text-white flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                >
+                  <User className="w-4 h-4 text-orange-400" />
+                  <span>Client Login / Register</span>
+                </button>
+              )}
+
               {onOpenFeedback && (
                 <button
                   onClick={() => {
